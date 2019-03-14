@@ -6,14 +6,16 @@ function Counter() {
   // But we only really need to read that value for the first render
   // 🐨 1. instead of passing the value to useState as we are now,
   // pass a function which returns the value.
-  const [count, setCount] = useState(
-    Number(window.localStorage.getItem('count') || 0),
-  )
+  const getLocal = () => Number(window.localStorage.getItem('count') || 0)
+  
+  const [count, setCount] = useState(getLocal())
+
   const incrementCount = () => setCount(count + 1)
+
   useEffect(
     () => {
       window.localStorage.setItem('count', count)
-    },
+    },[count]
     // 🐨 2. pass a second argument to useEffect right here
     // it should be an array of the callback's "dependencies"
     // Said differently: "What variables does the useEffect callback use?"
