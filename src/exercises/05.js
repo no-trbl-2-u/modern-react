@@ -4,20 +4,27 @@
 // Make sure to ask me what the difference is!
 // https://reactjs.org/docs/hooks-reference.html#useref
 // https://reactjs.org/docs/hooks-reference.html#uselayouteffect
-import React, {useRef, useLayoutEffect} from 'react'
-// 🐨 2. you'll need this:
+import React, {useRef, useLayoutEffect, useEffect} from 'react'
 import VanillaTilt from 'vanilla-tilt'
 
 function Tilt(props) {
   // 🐨 3. create a `tiltNode` variable here with `useRef()`
   const tiltNode = useRef(VanillaTilt)
+
+  //------------------------------
+  // How to use useRef otherwise
+  const otherNode = useRef(null) // initialize to null
+  //------------------------------
   
   
   // 🐨 5. create a `useLayoutEffect` callback here which
   //    uses the `VanillaTilt.init` with `tiltNode.current`
   useLayoutEffect(() => {
+    console.log("ULE", otherNode.current)
     VanillaTilt.init(tiltNode.current, vanillaTiltOptions)
   }, [])
+
+  useEffect(() => {console.log("UE", otherNode.current)})
 
 
   // 🐨 6: you'll need this in your callback:
@@ -47,9 +54,28 @@ function Tilt(props) {
   return (
     <div className="tilt-root" ref={ tiltNode }>
       <div className="tilt-child">{props.children}</div>
+      <div ref={ otherNode }>
+        Some other thing
+      </div>
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Don't make changes to the Usage component. It's here to show you how your
 // component is intended to be used and is used in the tests.
@@ -60,6 +86,8 @@ function Usage() {
       <Tilt>
         <div className="totally-centered">vanilla-tilt.js</div>
       </Tilt>
+
+
     </div>
   )
 }
